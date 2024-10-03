@@ -2,9 +2,13 @@ name: Eureka Server CI
 
 on:
   push:
+    branches:
+      - 'master'
     paths:
       - 'discovery-server/**'
   pull_request:
+    branches:
+      - 'master'
     paths:
       - 'discovery-server/**'
 
