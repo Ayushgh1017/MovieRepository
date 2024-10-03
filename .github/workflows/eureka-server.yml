@@ -25,4 +25,4 @@ jobs:
           distribution: 'temurin'
       - name: Build Eureka Server with Gradle
         working-directory: ./discovery-server
-        run: ./gradlew build
+        run: ./gradlew clean build
