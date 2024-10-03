@@ -1,0 +1,28 @@
+name: Eureka Server CI
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'discovery-server/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'discovery-server/**'
+
+jobs:
+  build:
+    name: Build Eureka Server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 23 for Eureka Server
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+      - name: Build Eureka Server with Gradle
+        working-directory: ./discovery-server
+        run: ./gradlew build
