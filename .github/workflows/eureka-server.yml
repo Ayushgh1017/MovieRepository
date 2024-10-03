@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
 
       - name: change directory to discovery server
-        run: cd discovery-server
+        run: cd ./discovery-server
         
       - name: Printing files
         run: ls -a
