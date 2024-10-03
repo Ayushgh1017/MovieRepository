@@ -39,24 +39,14 @@ jobs:
         working-directory: ./discovery-server
         run: ./gradlew clean build
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./discovery-server
-          file: ./discovery-server/Dockerfile
-          push: true
-          tags: ayushgh2001/movie:latest
+      - name: Build the Docker image
+        run: docker buildx build . --file Dockerfile -t latest
+       
       - name: Tag Docker image
-        run: docker tag ayushgh2001/movie:latest ${{ secrets.DOCKER_REPO }}
+        run: docker tag ${{ secrets.DOCKER_REPO }}
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_REPO }}
