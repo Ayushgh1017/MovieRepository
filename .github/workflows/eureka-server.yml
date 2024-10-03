@@ -53,6 +53,11 @@ jobs:
         with:
           context: ./discovery-server
           file: ./discovery-server/Dockerfile
-          image: ayushgh2001/movie
           push: true
-          tags: latest
+          tags: ayushgh2001/movie:latest
+      - name: Tag Docker image
+        run: docker tag ayushgh2001/movie:latest ${{ secrets.DOCKER_REPO }}
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_REPO }}
+
