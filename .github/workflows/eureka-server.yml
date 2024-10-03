@@ -11,7 +11,7 @@ on:
       - 'main'
     paths:
       - 'discovery-server/**'
-
+  workflow_dispatch:
 jobs:
   build:
     name: Build Eureka Server
