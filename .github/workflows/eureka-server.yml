@@ -12,6 +12,7 @@ on:
     paths:
       - 'discovery-server/**'
   workflow_dispatch:
+
 jobs:
   build:
     name: Build Eureka Server
@@ -46,8 +47,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
-          context: ./discovery-server 
-          file: ./discovery-server/Dockerfile
-          image: ayushgh2001/movie:latest 
-          push: true 
-
+          context: ./discovery-server  # Path to the directory containing the Dockerfile
+          file: ./discovery-server/Dockerfile  # Path to the Dockerfile
+          image: ayushgh2001/movie:latest  # Ensure you have a valid tag
+          push: true  # Set to true to push the image to Docker Hub
