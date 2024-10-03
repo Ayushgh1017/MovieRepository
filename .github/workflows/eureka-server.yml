@@ -17,9 +17,10 @@ jobs:
   build:
     name: Build Eureka Server
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up JDK 23 for Eureka Server
         uses: actions/setup-java@v4
         with:
@@ -28,7 +29,7 @@ jobs:
         
       - name: Change directory & Print files
         working-directory: ./discovery-server
-        run: ls -a
+        run: ls -la
         
       - name: Set executable permission for gradlew
         working-directory: ./discovery-server
@@ -38,16 +39,15 @@ jobs:
         working-directory: ./discovery-server
         run: ./gradlew clean build
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and Push Docker Image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./discovery-server  # Path to the directory containing the Dockerfile
-          file: ./discovery-server/Dockerfile  # Path to the Dockerfile
-          image: ayushgh2001/movie:latest  # Ensure you have a valid tag
-          push: true  # Set to true to push the image to Docker Hub
+          context: ./discovery-server  # Specify the context
+          file: ./discovery-server/Dockerfile  # Specify the Dockerfile location
+          image: ayushgh2001/movie
+          tags: |
+            latest
+            v1.0.0
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
