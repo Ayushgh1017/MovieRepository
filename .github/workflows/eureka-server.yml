@@ -30,6 +30,7 @@ jobs:
         run: ls -a
         
       - name: Set executable permission for gradlew
+        working-directory: ./discovery-server
         run: chmod +x gradlew
         
       # - name: Build Eureka Server with Gradle
