@@ -1,0 +1,55 @@
+services:
+  discovery-server:
+    build: ./discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - internalServer
+  movie-catalog-service:
+    build: ./movie-catalog-service
+    container_name: movie-catalog
+    ports:
+      - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    depends_on:
+      - discovery-server
+    networks:
+      - internalServer
+  movie-info-service:
+    build: ./movie-info-service
+    container_name: movie-info
+    ports:
+      - "8082:8082"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    depends_on:
+      - discovery-server
+    networks:
+      - internalServer
+  rating-data-service:
+    build: ./rating-data-service
+    container_name: ratings-data
+    ports:
+      - "8083:8083"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    depends_on:
+      - discovery-server
+    networks:
+      - internalServer
+
+networks:
+  internalServer:
+    driver: "bridge"

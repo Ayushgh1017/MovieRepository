@@ -1,5 +1,4 @@
 package io.javabrains.movie_info_service.controllers;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.javabrains.movie_info_service.models.Movie;
 import io.javabrains.movie_info_service.models.MovieSummary;
 import org.springframework.beans.factory.annotation.Autowired;

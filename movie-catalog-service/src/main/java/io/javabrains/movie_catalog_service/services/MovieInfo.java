@@ -12,13 +12,14 @@ import org.springframework.web.client.RestTemplate;
 public class MovieInfo {
     @Autowired
     private RestTemplate restTemplate;
+
     @CircuitBreaker(name = "movieInfo", fallbackMethod = "getFallbackCatalogItem")
     public CatalogItem getCatalogItem(Rating rating) {
         Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
         return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
     }
 
-    public CatalogItem getFallbackCatalogItem(Rating rating) {
+    public CatalogItem getFallbackCatalogItem(Rating rating, Throwable throwable) {
         return new CatalogItem("Movie name not found", "", rating.getRating());
     }
 }
