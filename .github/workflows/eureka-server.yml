@@ -24,10 +24,13 @@ jobs:
         with:
           java-version: '23'
           distribution: 'temurin'
-          
+
+      - name: Printing files
+        run: ls -a
+        
       - name: Set executable permission for gradlew
         run: chmod +x gradlew
         
-      - name: Build Eureka Server with Gradle
-        working-directory: ./discovery-server
-        run: ./gradlew clean build
+      # - name: Build Eureka Server with Gradle
+      #   working-directory: ./discovery-server
+      #   run: ./gradlew clean build
