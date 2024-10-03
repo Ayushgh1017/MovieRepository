@@ -33,6 +33,6 @@ jobs:
         working-directory: ./discovery-server
         run: chmod +x gradlew
         
-      # - name: Build Eureka Server with Gradle
-      #   working-directory: ./discovery-server
-      #   run: ./gradlew clean build
+      - name: Build Eureka Server with Gradle
+        working-directory: ./discovery-server
+        run: ./gradlew clean build
