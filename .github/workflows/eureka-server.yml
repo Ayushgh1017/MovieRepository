@@ -39,15 +39,22 @@ jobs:
         working-directory: ./discovery-server
         run: ./gradlew clean build
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
         with:
-          context: ./discovery-server  # Specify the context
-          file: ./discovery-server/Dockerfile  # Specify the Dockerfile location
-          image: ayushgh2001/movie
-          tags: |
-            latest
-            v1.0.0
-          registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./discovery-server
+          file: ./discovery-server/Dockerfile
+          image: ayushgh2001/movie
+          push: true
+          tags: |
+            latest
+            v1.0.0  # You can replace this with your versioning logic
