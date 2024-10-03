@@ -40,6 +40,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./discovery-server
+          file: ./discovery-server/Dockerfile
           image: ayushgh2001/movie
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
