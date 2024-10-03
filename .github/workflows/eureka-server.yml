@@ -36,3 +36,12 @@ jobs:
       - name: Build Eureka Server with Gradle
         working-directory: ./discovery-server
         run: ./gradlew clean build
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          image: ayushgh2001/movie
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
