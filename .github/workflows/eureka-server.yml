@@ -24,11 +24,9 @@ jobs:
         with:
           java-version: '23'
           distribution: 'temurin'
-
-      - name: change directory to discovery server
-        run: cd ./discovery-server
         
-      - name: Printing files
+      - name: Change directory & Print files
+        working-directory: ./discovery-server
         run: ls -a
         
       - name: Set executable permission for gradlew
