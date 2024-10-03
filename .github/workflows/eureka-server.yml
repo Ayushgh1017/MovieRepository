@@ -55,6 +55,4 @@ jobs:
           file: ./discovery-server/Dockerfile
           image: ayushgh2001/movie
           push: true
-          tags: |
-            latest
-            v1.0.0  # You can replace this with your versioning logic
+          tags: latest
