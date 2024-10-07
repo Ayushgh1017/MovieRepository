@@ -79,7 +79,7 @@ jobs:
 
       - name: Build Docker image
         working-directory: ./movie-catalog-service
-        run: docker buildx build . -t ${{ secrets.DOCKER_REPO }}
+        run: docker buildx build . -t ${{ secrets.MOVIE_CATALOG }}
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_REPO }}
+        run: docker push ${{ secrets.MOVIE_CATALOG }}
