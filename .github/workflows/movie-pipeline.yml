@@ -1,0 +1,85 @@
+name: Movie Build, Test, and Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'feature/**'
+    paths:
+      - '${{ inputs.service-directory }}/**'
+  pull_request:
+    branches:
+      - 'main'
+    paths:
+      - '${{ inputs.service-directory }}/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 23 for Testing
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      - name: Change directory & Print files
+        working-directory: ${{ inputs.service-directory }}
+        run: ls -la
+
+      - name: Set executable permission for gradlew
+        working-directory: ${{ inputs.service-directory }}
+        run: chmod +x gradlew
+
+      - name: Run Unit Tests
+        working-directory: ${{ inputs.service-directory }}
+        run: ./gradlew test
+
+  build:
+    name: Build Service
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 23 for Building
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+        
+      - name: Change directory & Print files
+        working-directory: ${{ inputs.service-directory }}
+        run: ls -la
+        
+      - name: Set executable permission for gradlew
+        working-directory: ${{ inputs.service-directory }}
+        run: chmod +x gradlew
+        
+      - name: Build Service with Gradle
+        working-directory: ${{ inputs.service-directory }}
+        run: ./gradlew clean build
+
+  docker:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build 
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        working-directory: ${{ inputs.service-directory }}
+        run: docker buildx build . -t ${{ secrets.DOCKER_REPO }}
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_REPO }}
