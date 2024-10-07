@@ -1,3 +1,5 @@
+name: Movie Catalog Service
+
 on:
   push:
     branches:
