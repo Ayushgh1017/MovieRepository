@@ -1,0 +1,85 @@
+name: Movie Info Service
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'feature/**'
+    paths:
+      - 'movie-info-service/**'
+  pull_request:
+    branches:
+      - 'main'
+    paths:
+      - 'movie-info-service/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 23 for Testing
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      - name: Change directory & Print files
+        working-directory: ./movie-info-service
+        run: ls -la
+
+      - name: Set executable permission for gradlew
+        working-directory: ./movie-info-service
+        run: chmod +x gradlew
+
+      - name: Run Unit Tests
+        working-directory: ./movie-info-service
+        run: ./gradlew test
+
+  build:
+    name: Build Eureka Server
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 23 for Eureka Server
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+        
+      - name: Change directory & Print files
+        working-directory: ./movie-info-service
+        run: ls -la
+        
+      - name: Set executable permission for gradlew
+        working-directory: ./movie-info-service
+        run: chmod +x gradlew
+        
+      - name: Build Eureka Server with Gradle
+        working-directory: ./movie-info-service
+        run: ./gradlew clean build
+
+  docker:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build 
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        working-directory: ./movie-info-service
+        run: docker buildx build . -t ${{ secrets.MOVIE_INFO }}
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.MOVIE_INFO }}
