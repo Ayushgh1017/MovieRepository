@@ -6,6 +6,7 @@ import io.javabrains.movie_catalog_service.models.UserRating;
 import io.javabrains.movie_catalog_service.services.MovieInfo;
 import io.javabrains.movie_catalog_service.services.UserRatingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +37,10 @@ public class MovieCatalogResource {
                 .map(rating -> movieInfo.getCatalogItem(rating))
                 .collect(Collectors.toList());
 
+    }
+
+    @GetMapping("/getHelloWorld")
+    public String getHelloWorld() {
+        return "Hello World to AWS";
     }
 }
